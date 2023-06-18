@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block title %}Wishlist{% endblock title %}
+
+{% block content %}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                    <span>Wishlist</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shop Cart Section Begin -->
+<section class="shop-cart spad wishlistdata">
+    <div class="container">
+        {% if wishlist %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="shop__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for list in wishlist %}
+                            <tr>
+                                <td class="cart__product__item">
+                                    <img src="{{list.products.image.url}}" alt="" height=100>
+                                    <div class="cart__product__item__title">
+                                        <a href="{{list.products.get_url}}">
+                                            <h6>{{list.products.name}}</h6>
+                                        </a>
+                                        <div class="rating">
+                                            <i class="fa fa-star{% if list.products.averageReview < 0.5 %}-o{% elif list.products.averageReview  >= 0.5  and list.products.averageReview  < 1 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                            <i class="fa fa-star{% if list.products.averageReview < 1.5 %}-o{% elif list.products.averageReview  >= 1.5  and list.products.averageReview  < 2 %}-half-o{% endif %}" aria-hidden="true"></i>                                                   
+                                            <i class="fa fa-star{% if list.products.averageReview < 2.5 %}-o{% elif list.products.averageReview  >= 2.5  and list.products.averageReview  < 3 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                            <i class="fa fa-star{% if list.products.averageReview < 3.5 %}-o{% elif list.products.averageReview  >= 3.5  and list.products.averageReview  < 4 %}-half-o{% endif %}" aria-hidden="true"></i>
+                                            <i class="fa fa-star{% if list.products.averageReview < 4.5 %}-o{% elif list.products.averageReview  >= 4.5  and list.products.averageReview  < 5 %}-half-o{% endif %}" aria-hidden="true"></i> 
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="cart__price">$ {{list.products.selling_price}}</td>
+                                <td class="cart__close"><a href="#" class="remove-to-wishlist" data-id="{{ list.products.id }}" data-csrf="{{ csrf_token }}"><span class="icon_close"></span></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <h4 class="text-center">Your wishlist page is empty</h4>
+        {% endif %}
+        <div class="row pt-4">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn text-center">
+                    <a href="{% url 'store' %}">Continue Shopping</a>
+                </div>
+            </div>
+            {% if wishlist %}
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn text-center">
+                    <a href="" style="background-color: red;color: white;border-radius: 25px;">PROCCED TO CHECKOUT</a>
+                </div>
+            </div> 
+            {% endif %}
+        </div>
+    </div>
+</section>
+<!-- Shop Cart Section End -->
+{% endblock content %}

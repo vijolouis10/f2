@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block title %}Checkout{% endblock title %}
+{% block content %}
+ <!-- Breadcrumb Begin -->
+ <div class="breadcrumb-option">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="breadcrumb__links">
+                  <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                  <span>Checkout</span>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+  <div class="container">
+      <form action="{% url 'place_order' %}" class="checkout__form" method="POST">
+        {% csrf_token %}
+          <div class="row">
+              <div class="col-lg-6">
+                  <h5>Billing detail</h5>
+                  <div class="row">
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <div class="checkout__form__input">
+                              <p>First Name <span>*</span></p>
+                              <input type="text" name="first_name" required>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                          <div class="checkout__form__input">
+                              <p>Last Name <span>*</span></p>
+                              <input type="text"  name="last_name" required>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Phone <span>*</span></p>
+                            <input type="text"  name="phone_number" required>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div class="checkout__form__input">
+                            <p>Email <span>*</span></p>
+                            <input type="text" name="email" required>
+                        </div>
+                    </div>
+                      <div class="col-lg-12">
+                          <div class="checkout__form__input">
+                              <p>Address <span>*</span></p>
+                              <input type="text" placeholder="Street Address" name="address_line_1" required>
+                              <input type="text" placeholder="Apartment. suite, unite ect ( optinal )" name="address_line_2">
+                          </div>
+                          <div class="checkout__form__input">
+                              <p>Town/City <span>*</span></p>
+                              <input type="text" name="city" required>
+                          </div>
+                          <div class="checkout__form__input">
+                            <p>Postcode/Zip <span>*</span></p>
+                            <input type="text" name="pincode" required>
+                        </div>
+                          <div class="checkout__form__input">
+                              <p>State <span>*</span></p>
+                              <input type="text" name="state" required>
+                          </div>
+                          <div class="checkout__form__input">
+                            <p>Country <span>*</span></p>
+                            <input type="text" name="country" required>
+                        </div>
+                      </div>
+                      <div class="col-lg-12">
+                          <div class="checkout__form__checkbox">
+                              </div>
+                              <div class="checkout__form__input">
+                                  <p>Oder notes <span>*</span></p>
+                                  <input type="text"
+                                  placeholder="Note about your order, e.g, special noe for delivery" name="order_note">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6">
+                    <div class="checkout__order">
+                        <h4 class="order__title">Your order</h4>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Product</th>
+                                  <th scope="col">Quantity</th>
+                                  <th scope="col">Total</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for cart_item in cart_items %}
+                                <tr>
+                                  <td class="product__cart__item">
+                                    <div class="product__cart__item__text">
+                                      <a href="{{cart_item.product.get_url}}"><h6 class="mb-0 text-nowrap">{{cart_item.product.name}}</h6></a>
+                                      <p class="small">
+                                        {% if cart_item.variations.all %}
+                                        {% for i in cart_item.variations.all %}
+                                        Size: {{i.size}}&nbsp;&nbsp;
+                                        {% endfor %}
+                                        {% endif %}
+                                      </p>
+                                    </div>
+                                  </td>
+                                  <td class="text-center text-nowrap">$ {{cart_item.product.selling_price}}.0 X {{cart_item.quantity}}</td>
+                                  <td class="text-nowrap">$ {{cart_item.sub_total}}.0</td>
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                          
+                        
+                        <hr>
+                        <div class="checkout__order__total">
+                            <ul>
+                                <li>Subtotal <span>$ {{total}}.0</span></li>
+                                <li>Discount <span>$ {{discount}}.0</span></li>
+                                <li>Total <span>$ {{grand_total}}.0</span></li>
+                            </ul>
+                        </div>
+                        <button type="submit" class="site-btn mb-1 mt-1">PLACE ORDER</button>
+                        <a href="#" class="site-btn text-center" style="background-color: rgb(12, 12, 12); color: rgb(250, 247, 247); border: 1px solid #e1e1e1;">Continue Shopping</a>
+                    </div>
+                </div>                
+          </form>
+      </div>
+  </section>
+  <!-- Checkout Section End -->
+{% endblock content %}
