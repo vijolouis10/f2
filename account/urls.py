@@ -5,6 +5,7 @@ urlpatterns = [
     path('register/',views.register,name='register'),
     path('actiavte/<uidb64>/<token>/',views.activate,name='activate'),
     path('login/',views.user_login,name='login'),
+     path('otp/',views.otp_verify,name='otp'),
     path('forgot_password/',views.forgot_password,name='forgot_password'),
     path('reset_password_validation/<uidb64>/<token>/',views.reset_password_validation,name='reset_password_validation'),
     path('reset_password/',views.reset_password,name='reset_password'),

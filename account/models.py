@@ -91,4 +91,11 @@ class UserProfile(models.Model):
 
   def full_address(self):
     return self.address_line_1+" "+self.address_line_2    
-      
+
+
+class Otp(models.Model):
+  user=models.ForeignKey(Account,on_delete=models.CASCADE)
+  otp=models.IntegerField()
+
+  def __str__(self):
+    return str(self.otp)

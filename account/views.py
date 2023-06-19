@@ -8,13 +8,13 @@ from django.utils.http import urlsafe_base64_encode,urlsafe_base64_decode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
-from .models import Account, UserProfile
+from .models import Account, Otp, UserProfile
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-import requests
 from cart.views import _cart_id
 from cart.models import Cart,CartItem
+import math,random
 
 # Create your views here.
 def register(request):
@@ -74,68 +74,90 @@ def activate(request,uidb64,token):
     messages.error(request,'Invalid activation link!')
     return redirect('register')   
 
+def generate_otp():
+  orcus="0123456789"
+  size=6
+  length=len(orcus)
+  otp=""
+  for i in range(size):
+    otp+=orcus[math.floor(random.random()*length)]
+  return otp  
 
+def send_otp(email, otp):
+  subject = 'OTP Verification'
+  message = f'Your OTP is: {otp}'
+  to_email=email
+  EmailMessage(subject, message,to_email,to=[to_email,]).send()
 
 def user_login(request):
-    if request.user.is_authenticated:
-        # User is already authenticated, redirect to previous page using Referer header
-        referer = request.META.get('HTTP_REFERER')
-        if referer:
-            messages.info(request, f'{request.user.username} you are already logged in')
-            return redirect(referer)
+  if request.method == "POST":
+    email = request.POST['email']
+    password = request.POST['password']
+    user = authenticate(email=email, password=password)
+    if user is not None:
+      # Generate OTP and send it to the user's email address
+      otp = generate_otp()
+      send_otp(email, otp)
+      # Save OTP in the database
+      otp_instance = Otp(user=user, otp=otp)
+      otp_instance.save()  
+      request.session['user_id'] = user.id 
+      # Redirect to OTP verification page
+      return redirect('otp')
+    else:
+      messages.error(request, 'Invalid login credentials')
+      return redirect('login')
+  return render(request, 'account/login.html')
 
+def otp_verify(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['password']
-        user = authenticate(email=email, password=password)
+        otp_entered = request.POST['otp']
+        user_id = request.session.get('user_id')
+        try:
+            user = Account.objects.get(id=user_id)
+            otp_instance = Otp.objects.get(user=user)
+            if otp_instance.otp == int(otp_entered):
+                otp_instance.delete()
 
-        if user is not None:
-            if user.is_superadmin:
-                messages.info(request, 'If you are admin please try to logging in admin login page!')
-                return redirect('login')
-            else:
+                # Check if a non-user cart exists
                 try:
-                  cart = Cart.objects.get(cart_id=_cart_id(request))
-                  is_cart_item_exists = CartItem.objects.filter(cart=cart).exists() 
-                  if is_cart_item_exists:
+                    cart = Cart.objects.get(cart_id=_cart_id(request))
+                except Cart.DoesNotExist:
+                    cart = None
+
+                if cart is not None:
+                    # Merge the non-user cart items with the logged-in user's cart
                     cart_items = CartItem.objects.filter(cart=cart)
                     for item in cart_items:
                         product = item.product
                         variations = item.variations.all()
+
                         if variations:
-                          user_cart = CartItem.objects.filter(product=product, user=user, variations__in=variations).first()
+                            user_cart = CartItem.objects.filter(product=product, user=user, variations__in=variations).first()
                         else:
-                           user_cart = CartItem.objects.filter(product=product, user=user, variations__isnull=True).first()
+                            user_cart = CartItem.objects.filter(product=product, user=user, variations__isnull=True).first()
+
                         if user_cart:
                             user_cart.quantity += item.quantity
                             user_cart.save()
                         else:
                             item.user = user
-                            item.cart = None 
+                            item.cart = None
                             item.save()
-                  cart_items.delete() 
-                except Cart.DoesNotExist:
-                    pass      
+
+                    cart_items.delete()
 
                 login(request, user)
-                messages.success(request, f'{user.username} Logged in successfully!')
-
-                url = request.META.get('HTTP_REFERER')
-                
-                try:
-                    query = requests.utils.urlparse(url).query
-                    params = dict(x.split('=') for x in query.split('&'))
-
-                    if 'next' in params:
-                        nextPage = params['next']
-                        return redirect(nextPage)
-                except:
-                    return redirect('home')
-        else:
-            messages.error(request, 'Invalid Credentials!')
-            return redirect('login')
-
-    return render(request, 'account/login.html')
+                messages.success(request, f'{user.username} logged in successfully!')
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Invalid OTP')
+                return redirect('otp')
+        except Account.DoesNotExist:
+            messages.error(request, 'User not found')
+        except Otp.DoesNotExist:
+            messages.error(request, 'OTP verification failed')
+    return render(request, 'account/otp.html')
 
 
 
