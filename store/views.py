@@ -4,6 +4,8 @@ from django.db.models import Q
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 # Create your views here.
+
+#Store page functionality
 def store(request,slug=None):
   category=None
   products=None
@@ -24,6 +26,8 @@ def store(request,slug=None):
   }
   return render(request,'store/store.html',context)
 
+
+#product detail functionality
 def product_detail(request,category_slug,product_slug):
   try:
     product=Product.objects.get(category__slug=category_slug,slug=product_slug)
@@ -38,7 +42,7 @@ def product_detail(request,category_slug,product_slug):
   }    
   return render(request,'store/product_detail.html',context)   
 
-
+#product search functionality
 def search(request):
   if 'keyword' in request.GET:
     keyword=request.GET['keyword']
@@ -51,7 +55,7 @@ def search(request):
   }
   return render(request,'store/store.html',context)
 
-
+#filter product by maximum and minimum price functionality
 def filter(request):
     if request.method == "POST":
         min_price = request.POST.get('minamount')

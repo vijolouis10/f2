@@ -17,8 +17,8 @@
             <h6 class="font-weight-bolder text-white mb-0">Edit Category</h6>
           </nav>
         </div>
-      </nav>
-      <!-- End Navbar -->
+    </nav>
+    <!-- End Navbar -->
 
     <div class="container-fluid py-4">
         <div class="row">
@@ -27,20 +27,20 @@
                     <div class="card-header pb-0">
                         <h6>Edit Category</h6>
                     </div>
-                        <div>
-                            {% if messages %}
-                            {% for message in messages %}
-                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                            <div class="alert alert-danger alert-dismissible">
-                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                <strong>{{message}}</strong>
-                            </div>
-                            {% else %}
-                            <div></div>
-                            {% endif%}
-                            {% endfor %}
-                            {% endif %}
+                    <div>
+                        {% if messages %}
+                        {% for message in messages %}
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        <div class="alert alert-danger alert-dismissible">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>{{message}}</strong>
                         </div>
+                        {% else %}
+                        <div></div>
+                        {% endif%}
+                        {% endfor %}
+                        {% endif %}
+                    </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <form action="" method="post" enctype="multipart/form-data">
@@ -82,6 +82,7 @@
                 </div>
             </div>
         </div>
+    </div>
 
 
   

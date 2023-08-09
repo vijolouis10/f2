@@ -125,80 +125,80 @@
                     </thead>
                     <tbody>
                         {% for order in orders %}
-                      <tr>
-                        <td>
-                            <h6 class="ps-4 mb-0 text-sm font-weight-bold "> {{ order.created_at }} </h6>
-                        </td>
-                        <td class="text-sm">
-                          <div class="d-flex flex-column justify-content-center">
-                            <a href="{% url 'view_order' order.id %}" class="text-danger px-2" ><h6 class="mb-0 text-sm font-weight-bold ">{{order.order_number}}</h6></a> 
-                          </div>
-                      </td>
-                        <td class="text-sm">
+                        <tr>
+                            <td>
+                                <h6 class="ps-4 mb-0 text-sm font-weight-bold "> {{ order.created_at }} </h6>
+                            </td>
+                            <td class="text-sm">
                             <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold ">{{order.first_name|capfirst}} {{order.last_name|capfirst}}</h6>
+                                <a href="{% url 'view_order' order.id %}" class="text-danger px-2" ><h6 class="mb-0 text-sm font-weight-bold ">{{order.order_number}}</h6></a> 
                             </div>
-                        </td>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold ">$ {{order.order_total}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold ">{{order.payment.payment_method}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                          <div class="d-flex flex-column justify-content-center">
-                            {% if order.status == 'Delivered' %}
-                            <h6 class="mb-0 text-sm font-weight-bold text-success">{{order.status}}</h6>
-                            {% elif order.status == 'Cancelled'  %}
-                            <h6 class="mb-0 text-sm font-weight-bold text-danger">{{order.status}}</h6>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{order.first_name|capfirst}} {{order.last_name|capfirst}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">$ {{order.order_total}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{order.payment.payment_method}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    {% if order.status == 'Delivered' %}
+                                    <h6 class="mb-0 text-sm font-weight-bold text-success">{{order.status}}</h6>
+                                    {% elif order.status == 'Cancelled'  %}
+                                    <h6 class="mb-0 text-sm font-weight-bold text-danger">{{order.status}}</h6>
+                                    {% else %}
+                                    <h6 class="mb-0 text-sm font-weight-bold text-primary">{{order.status}}</h6>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            {% if order.status == 'Delivered' or order.status == 'Cancelled' %}
                             {% else %}
-                            <h6 class="mb-0 text-sm font-weight-bold text-primary">{{order.status}}</h6>
+                                <form action="{% url 'order_status' order.id %}" method="post">
+                                    {% csrf_token %}
+                                    <td>
+                                        <select name="status" class="form">
+                                            {% if order.status == 'Processing' %}
+                                                <option selected>Processing</option>
+                                            {% else %}
+                                                <option>Processing</option>
+                                            {% endif %}
+                                            {% if order.status == 'Accepted' %}
+                                                <option selected>Accepted</option>
+                                            {% else %}
+                                                <option>Accepted</option>
+                                            {% endif %}
+                                            {% if order.status == 'Out For Delivery' %}
+                                                <option selected>Out For Delivery</option>
+                                            {% else %}
+                                                <option>Out For Delivery</option>
+                                            {% endif %}
+                                            {% if order.status == 'Delivered' %}
+                                                <option selected>Delivered</option>
+                                            {% else %}
+                                                <option>Delivered</option>
+                                            {% endif %}
+                                            {% if order.status == 'Cancelled' %}
+                                                <option selected>Cancelled</option>   
+                                            {% else %}
+                                            <option>Cancelled</option>   
+                                            {% endif %}
+                                        </select>
+                                    </td>
+                                    <td class="text-sm">
+                                        <button type="submit" class="btn btn-success">Change</button>
+                                    </td>
+                                </form>
                             {% endif %}
-                          </div>
-                      </td>
-                      {% if order.status == 'Delivered' or order.status == 'Cancelled' %}
-                      {% else %}
-                      <form action="{% url 'order_status' order.id %}" method="post">
-                          {% csrf_token %}
-                      <td>
-                        <select name="status" class="form">
-                          {% if order.status == 'Processing' %}
-                          <option selected>Processing</option>
-                          {% else %}
-                          <option>Processing</option>
-                          {% endif %}
-                          {% if order.status == 'Accepted' %}
-                          <option selected>Accepted</option>
-                          {% else %}
-                          <option>Accepted</option>
-                          {% endif %}
-                          {% if order.status == 'Out For Delivery' %}
-                          <option selected>Out For Delivery</option>
-                          {% else %}
-                          <option>Out For Delivery</option>
-                          {% endif %}
-                          {% if order.status == 'Delivered' %}
-                          <option selected>Delivered</option>
-                          {% else %}
-                          <option>Delivered</option>
-                          {% endif %}
-                          {% if order.status == 'Cancelled' %}
-                          <option selected>Cancelled</option>   
-                          {% else %}
-                          <option>Cancelled</option>   
-                          {% endif %}
-                      </select>
-                      </td>
-                      <td class="text-sm">
-                          <button type="submit" class="btn btn-success">Change</button>
-                      </td>
-                      </form>
-                      {% endif %}
-                      </tr>
+                        </tr>
                         {% endfor %}
                     </tbody>
                   </table>
@@ -207,9 +207,9 @@
             </div>
           </div>
         </div>
-
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
-      <script>
+    </nav>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+    <script>
         const chart1 = document.getElementById('orderChart').getContext('2d');
         const orderChart = new Chart(chart1, {
             type: 'bar',
@@ -243,24 +243,24 @@
                 }
             }
         });
-      </script>
+    </script>
 
-      <script>
+    <script>
         const chart2 = document.getElementById('revenueChart').getContext('2d');
         const revenueChart = new Chart(chart2, {
             type: 'bar',
             data: {
-              labels : ['Paypal',],
+            labels : ['Paypal',],
                 datasets: [{
-                  label: "Revenue",
-                  data : ['{{paypal_total}}'],
-                  backgroundColor: [
-                      '#e60049', 
-                  ],
-                  borderColor: [
-                      '#e60049', 
-                  ],
-                  borderWidth: 1
+                label: "Revenue",
+                data : ['{{paypal_total}}'],
+                backgroundColor: [
+                    '#e60049', 
+                ],
+                borderColor: [
+                    '#e60049', 
+                ],
+                borderWidth: 1
                 }]
             },
             options: {
@@ -271,6 +271,6 @@
                 }
             }
         });
-      </script>
+    </script>
 
 {% endblock content %}

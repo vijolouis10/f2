@@ -14,10 +14,10 @@
             <h6 class="font-weight-bolder text-white mb-0">Users</h6>
           </nav>
         </div>
-      </nav>
-      <!-- End Navbar -->
+    </nav>
+    <!-- End Navbar -->
 
-      <div class="container-fluid py-4">
+    <div class="container-fluid py-4">
         <div class="row">
           <div class="col-12">
             <div class="card mb-4">
@@ -43,48 +43,48 @@
                         {% for user in users %}
                         {% if user.is_superadmin %}
                         {% else %}
-                      <tr>
-                        <td>
-                            <h6 class="ps-4 mb-0 text-sm font-weight-bold "> {{ forloop.counter0 }} </h6>
-                        </td>
-                        <td>
-                            <div>
-                                <img src="{{user.userprofile.profile_pic.url}}" class="avatar avatar-sm me-3" alt="user1">
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold ">{{user.first_name|capfirst}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold ">{{user.last_name|capfirst}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold ">{{user.username}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold ">{{user.email}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold ">{{user.phone_number}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            {% if user.is_active %}
-                          <a href="{% url 'block_user' user.id %}" class="text-success px-2" onclick="blockUser('{{ user.id }}')"><i class="fas fa-unlock"></i></a>
-                            {% else %}
-                          <a href="{% url 'block_user' user.id %}" class="text-danger px-2" onclick="unblockUser('{{ user.id }}')"><i class="fas fa-user-lock"></i></a>
-                            {% endif %}
-                        </td>
-                      </tr>
+                        <tr>
+                            <td>
+                                <h6 class="ps-4 mb-0 text-sm font-weight-bold "> {{ forloop.counter0 }} </h6>
+                            </td>
+                            <td>
+                                <div>
+                                    <img src="{{user.userprofile.profile_pic.url}}" class="avatar avatar-sm me-3" alt="user1">
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.first_name|capfirst}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.last_name|capfirst}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.username}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.email}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.phone_number}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                {% if user.is_active %}
+                            <a href="{% url 'block_user' user.id %}" class="text-success px-2" onclick="blockUser('{{ user.id }}')"><i class="fas fa-unlock"></i></a>
+                                {% else %}
+                            <a href="{% url 'block_user' user.id %}" class="text-danger px-2" onclick="unblockUser('{{ user.id }}')"><i class="fas fa-user-lock"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
                         {% endif %}
                         {% endfor %}
                     </tbody>
@@ -92,52 +92,52 @@
                 </div>
               </div>
             </div>
-          </div>
         </div>
+    </div>
    
   
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
-    function blockUser(userId) {
-      const message = "Once blocked, the user will not be able to access their account!";
-      event.preventDefault();
-      swal({
-        title: "Are you sure?",
-        text: message,
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-  
-      })
-      .then((willBlock) => {
-        if (willBlock) {
-          window.location.href = "http://127.0.0.1:8000/myadmin/block_user/"+userId;
-        } else {
-          swal("The user has not been blocked.");
-        }
-      });
-    }
-</script>  
-<script>
-    function unblockUser(userId) {
-      const message = "Once unblocked, the user will be able to access their account!";
-      event.preventDefault();
-      swal({
-        title: "Are you sure?",
-        text: message,
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-
-      })
-      .then((willUnblock) => {
-        if (willUnblock) {
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function blockUser(userId) {
+        const message = "Once blocked, the user will not be able to access their account!";
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: message,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+    
+        })
+        .then((willBlock) => {
+            if (willBlock) {
             window.location.href = "http://127.0.0.1:8000/myadmin/block_user/"+userId;
-        } else {
-          swal("The user has not been unblocked.");
+            } else {
+            swal("The user has not been blocked.");
+            }
+        });
         }
-      });
-    }
-</script>
+    </script>  
+    <script>
+        function unblockUser(userId) {
+        const message = "Once unblocked, the user will be able to access their account!";
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: message,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+
+        })
+        .then((willUnblock) => {
+            if (willUnblock) {
+                window.location.href = "http://127.0.0.1:8000/myadmin/block_user/"+userId;
+            } else {
+            swal("The user has not been unblocked.");
+            }
+        });
+        }
+    </script>
   
 {% endblock content %}

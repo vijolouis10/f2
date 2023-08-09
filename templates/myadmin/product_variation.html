@@ -16,59 +16,59 @@
             <h6 class="font-weight-bolder text-white mb-0">Products</h6>
           </nav>
         </div>
-      </nav>
-      <!-- End Navbar -->
+    </nav>
+    <!-- End Navbar -->
 
-      <div class="container-fluid py-4">
+    <div class="container-fluid py-4">
         <div class="row">
-          <div class="col-12">
-            <div class="card mb-4">
-              <div class="card-header pb-0">
-                <h6>Product Management</h6>
-                <a href="{% url 'add_variation' %}" class="btn btn-primary pl-4">Add Variation</a>
-              </div>
-              <div class="card-body px-0 pt-0 pb-2">
-                <div class="table-responsive p-0">
-                  <table class="table align-items-center mb-0">
-                    <thead>
-                      <tr>   
-                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Product Name</th>
-                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Size</th>
-                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Disable</th> 
-                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Delete</th> 
-                      </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in products %}
-                      <tr>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold px-3">{{product.product.name}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            <div class="d-flex flex-column justify-content-center">
-                                <h6 class="mb-0 text-sm font-weight-bold px-3">{{product.size}}</h6>
-                            </div>
-                        </td>
-                        <td class="text-sm">
-                            {% if product.is_active %}
-                          <a href="{% url 'variation_status' product.id %}" class="text-success px-3"><i class="fa fa-check-circle fa-lg"></i></a>
-                            {% else %}
-                          <a href="{% url 'variation_status' product.id %}" class="text-danger px-3"><i class="fa fa-times-circle fa-lg"></i></a>
-                            {% endif %}
-                        </td>
-                        <td class="text-lg">
-                            <a href="{% url 'variation_delete' product.id %}" class="text-danger px-3" ><i class="fas fa-trash-alt"></i></a>
-                        </td>
-                      </tr>
-                        {% endfor %}
-                    </tbody>
-                  </table>
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Product Management</h6>
+                        <a href="{% url 'add_variation' %}" class="btn btn-primary pl-4">Add Variation</a>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                <tr>   
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Product Name</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Size</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Disable</th> 
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Delete</th> 
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% for product in products %}
+                                    <tr>
+                                        <td class="text-sm">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm font-weight-bold px-3">{{product.product.name}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="text-sm">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm font-weight-bold px-3">{{product.size}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="text-sm">
+                                            {% if product.is_active %}
+                                        <a href="{% url 'variation_status' product.id %}" class="text-success px-3"><i class="fa fa-check-circle fa-lg"></i></a>
+                                            {% else %}
+                                        <a href="{% url 'variation_status' product.id %}" class="text-danger px-3"><i class="fa fa-times-circle fa-lg"></i></a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-lg">
+                                            <a href="{% url 'variation_delete' product.id %}" class="text-danger px-3" ><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
 
 

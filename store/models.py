@@ -4,6 +4,8 @@ from django.db.models import Avg, Count
 from account.models import Account
 
 # Create your models here.
+
+#product category model
 class Category(models.Model):
   name=models.CharField(max_length=50,unique=True)
   slug=models.SlugField(max_length=50,unique=True)
@@ -24,6 +26,7 @@ class Category(models.Model):
   def __str__(self):
       return self.name
 
+#p
 class Product(models.Model):
   name=models.CharField(max_length=200, unique=True)
   slug=models.SlugField(max_length=200, unique=True)
