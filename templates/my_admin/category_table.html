@@ -1,0 +1,84 @@
+{% extends 'my_admin/admin_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+              <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+              <li class="breadcrumb-item text-sm text-white active" aria-current="page">Categories</li>
+            </ol>
+            <h6 class="font-weight-bolder text-white mb-0">Categories</h6>
+          </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Category Management</h6>
+                        <a href="{% url 'add_category' %}" class="btn btn-primary pl-4">Add Category</a>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0 table-hover">
+                                <thead>
+                                    <tr>   
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-4">SI.No</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Category Name</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Category Image</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Description</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2">Edit</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for category in categories %}
+                                    <tr>
+                                        <td>
+                                            <h6 class="ps-4 mb-0 text-sm font-weight-bold "> {{ category.id }} </h6>
+                                        </td>
+                                        <td class="text-sm">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm font-weight-bold ">{{category.name}}</h6>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <img src="{{category.image.url}}" class="avatar avatar-sm me-3" alt="user1">
+                                            </div>
+                                        </td>
+                                        <td class="text-sm">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm font-weight-bold ">{{category.description|slice:":40"}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="text-sm">
+                                        <a href="{% url 'edit_category' category.id %}" class="text-warning px-2" ><i class="far fa-edit"></i></a>               
+                                        </td>
+                                        <td class="text-sm">
+                                        <a href="{% url 'delete_category' category.id %}" class="text-danger px-2" ><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+  
+
+
+{% endblock content %}

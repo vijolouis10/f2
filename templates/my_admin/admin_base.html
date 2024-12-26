@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="apple-touch-icon" sizes="76x76" href="{% static '/admin/img/apple-icon.png' %}">
+        <link rel="icon" type="image/png" href="{% static '/admin/img/logo.png' %}">
+        <title>
+            f2 | ADMIN
+        </title>
+        <!--     Fonts and icons     -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+        <!-- Nucleo Icons -->
+        <link href="{% static '/admin/css/nucleo-icons.css' %}" rel="stylesheet" />
+        <link href="{% static '/admin/css/nucleo-svg.css' %}" rel="stylesheet" />
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+        <link href="{% static '/admin/css/nucleo-svg.css' %}" rel="stylesheet" />
+        <!-- CSS Files -->
+        <link id="pagestyle" href="{% static '/admin/css/argon-dashboard.css' %}" rel="stylesheet" />
+    </head>
+
+    <body class="g-sidenav-show   bg-gray-100">
+        <div class="min-height-300 bg-dark position-absolute w-100"></div>
+            <aside class="sidenav bg-white navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-4" id="sidenav-main">
+                <div class="sidenav-header d-flex align-items-center justify-content-center mt-3 mb-2">
+                    <img src="{{request.user.userprofile.profile_pic.url}}" class="img-fluid rounded-circle" width="75" height="75"  alt=""></a> 
+                </div>
+                <hr class="horizontal dark">
+                <div>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.path == '/my_admin/' %} active {% endif %}" href="{% url 'adminhome' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/user_table/' in request.path %} active {% endif %}" href="{% url 'user_table' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Users</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/product_table/' in request.path %} active {% endif %}" href="{% url 'product_table' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-shop text-success text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Products</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/product_gallery/' in request.path %} active {% endif %}" href="{% url 'product_gallery' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-image text-primary text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Product Gallery</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/product_variation/' in request.path %} active {% endif %}" href="{% url 'product_variation' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-folder-17 text-danger text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Product Variation</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/category_table/' in request.path %} active {% endif %}" href="{% url 'category_table' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-bullet-list-67 text-info text-sm opacity-10"></i> 
+                                </div>
+                                <span class="nav-link-text ms-1">Categories</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/order_table/' in request.path %} active {% endif %}" href="{% url 'order_table' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-bag-17 text-danger text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Orders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/coupon_table/' in request.path %} active {% endif %}" href="{% url 'coupon_table' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa fa-tag text-primary text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Coupons</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if '/sales_table/' in request.path %} active {% endif %}" href="{% url 'sales_table' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fas fa-chart-bar text-dark text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Sales Report</span>
+                            </a>
+                        </li>
+                        {% comment %} <li class="nav-item">
+                        <a class="nav-link {% if '/banner_table/' in request.path %} active {% endif %}" href="{% url 'banner_table' %}">
+                            <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                            <i class="ni ni-album-2 text-warning text-sm opacity-10"></i>
+                            </div>
+                            <span class="nav-link-text ms-1">Banners</span>
+                        </a>
+                        </li> {% endcomment %}
+                        <li class="nav-item">
+                            <a class="nav-link " href="{% url 'admin_logout' %}">
+                                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="ni ni-button-power text-danger text-sm opacity-10"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Logout</span>
+                            </a>
+                        </li>
+                    </ul> 
+                </div>
+                
+            </aside>
+            <main class="main-content position-relative border-radius-lg ">
+
+                {% block content %}
+                {% endblock content %}
+                
+            </main>
+        
+            <!--   Core JS Files   -->
+            <script src="{% static '/admin/js/core/popper.min.js' %}"></script>
+            <script src="{% static '/admin/js/core/bootstrap.min.js' %}"></script>
+            <script src="{% static '/admin/js/plugins/perfect-scrollbar.min.js' %}"></script>
+            <script src="{% static '/admin/js/plugins/smooth-scrollbar.min.js' %}"></script>
+            <script src="{% static '/admin/js/plugins/chartjs.min.js' %}"></script>
+            <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+            <script src="{% static '/admin/js/argon-dashboard.min.js?v=2.0.4' %}"></script>
+        </div>
+    </body>
+
+</html>

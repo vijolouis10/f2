@@ -1,0 +1,82 @@
+{% extends 'my_admin/admin_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+              <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+              <li class="breadcrumb-item text-sm text-white active" aria-current="page">Coupons</li>
+            </ol>
+            <h6 class="font-weight-bolder text-white mb-0">Coupons</h6>
+          </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Coupon Management</h6>
+                        <a href="{% url 'add_coupon' %}" class="btn btn-primary pl-4">Add Coupon</a>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>   
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-6">SI.No</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Coupon Code</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Discount</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Disable</th> 
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Delete</th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for coupon in coupons %}
+                                    <tr>
+                                        <td>
+                                            <h6 class="ps-6 mb-0 font-weight-bold "> {{ forloop.counter }} </h6>
+                                        </td>
+                                        <td class="text-sm">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm font-weight-bold px-3">{{coupon.coupon}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="text-sm">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm font-weight-bold px-3">$ {{coupon.discount}}</h6>
+                                            </div>
+                                        </td>
+                                        <td class="text-sm">
+                                            {% if coupon.is_active %}
+                                        <a href="{% url 'coupon_status' coupon.id %}" class="text-success px-3"><i class="fa fa-check-circle fa-lg"></i></a>
+                                            {% else %}
+                                        <a href="{% url 'coupon_status' coupon.id %}" class="text-danger px-3"><i class="fa fa-times-circle fa-lg"></i></a>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-lg">
+                                            <a href="{% url 'delete_coupon' coupon.id %}" class="text-danger px-3" ><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock content %}

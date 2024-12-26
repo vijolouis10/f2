@@ -1,0 +1,88 @@
+{% extends 'my_admin/admin_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Banners</li>
+                </ol>
+                <h6 class="font-weight-bolder text-white mb-0">Banners</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Banner Management</h6>
+                        <a href="{% url 'add_banner' %}" class="btn btn-primary pl-4">Add Banner</a>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>   
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-6">SI.No</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Banner</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Banner Status</th>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Delete</th> 
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for banner in banners %}
+                                    <tr>
+                                        <td>
+                                            <h6 class="ps-6 mb-0 font-weight-bold "> {{ forloop.counter }} </h6>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <img src="{{banner.banner.url}}" class="" alt="user1" width="80%" height="150px">
+                                            </div>
+                                        </td>
+                                        <form action="{% url 'edit_banner' banner.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <td class="text-lg">
+                                                <select name="status">  
+                                                    {% if banner.is_live %}      
+                                                    <option selected>Live</option>
+                                                    {% else %}
+                                                    <option>Live</option>
+                                                    {% endif %}
+                                                    {% if not banner.is_live %}      
+                                                    <option selected>Hide</option>
+                                                    {% else %}
+                                                    <option>Hide</option>
+                                                    {% endif %}
+                                                </select>   
+                                                <button type="submit" class="btn shadow-none"><i class="far fa-save text-dark fa-2x  pt-3"></i></button>             
+
+                                            </td>
+                                        </form>
+                                        <td class="text-lg">
+                                            <a href="{% url 'delete_banner' banner.id %}" class="text-danger px-2" ><i class="fas fa-trash-alt"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+  
+
+
+{% endblock content %}

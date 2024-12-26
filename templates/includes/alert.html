@@ -1,0 +1,26 @@
+
+{% if messages %}
+
+    {% for message in messages %}
+    <div id="message" class="container pt-1">
+        <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %} role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span arai-hidden="true">&times;</span></button>
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: {% endif %}
+            {{ message }}
+        </div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% if form.errors %}
+  {% for field, errors in form.errors.items %}
+    {% for error in errors %}
+      <div id="message" class="container pt-1">
+            <div class="alert alert-danger" role="alert">
+                <button type="button" class="close" data-dismiss="alert"><span arai-hidden="true">&times;</span></button>
+                {{ error }}
+            </div>
+      </div>
+    {% endfor %}
+  {% endfor %}
+{% endif %}

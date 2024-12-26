@@ -1,0 +1,96 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="apple-touch-icon" sizes="76x76" href="{% static '/admin/img/apple-icon.png' %}">
+        <link rel="icon" type="image/png" href="{% static '/admin/img/logo.png' %}">
+        <link rel="shortcut icon" href="{% static 'img/favicon.svg'%}" type="image/x-icon">
+        <title>
+            f2 | ADMIN
+        </title>
+        <!--     Fonts and icons     -->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+        <!-- Nucleo Icons -->
+        <link href="{% static '/admin/css/nucleo-icons.css' %}" rel="stylesheet" />
+        <link href="{% static '/admin/css/nucleo-svg.css' %}" rel="stylesheet" />
+        <!-- Font Awesome Icons -->
+        <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+        <link href="{% static '/admin/css/nucleo-svg.css' %}" rel="stylesheet" />
+        <!-- CSS Files -->
+        <link id="pagestyle" href="{% static '/admin/css/argon-dashboard.css' %}" rel="stylesheet" />
+    </head>
+    <body>
+
+        <main class="main-content  mt-0 bg-dark">
+            <section>
+                <div class="page-header min-vh-100">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12 d-flex justify-content-center">
+                                
+                                <div class="card card-plain ">
+                                    <div class="card-header pb-0 text-start bg-light">
+                                        <br>
+                                        <h4 class="font-weight-bolder">Log In</h4>
+                                        <p class="mb-0 ">Enter your email and password to login</p>
+                                    </div>
+                                    <div class="card-body bg-light">
+                                        <form action="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="mb-3">
+                                                <input type="email" class="form-control form-control-lg" name="email" placeholder="Email"
+                                                    aria-label="Email">
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <input type="password" class="form-control form-control-lg" name="password" placeholder="Password"
+                                                    aria-label="Password">
+                                            </div>
+                                
+                                            <div class="text-center">
+                                                <button type="submit" class="btn btn-lg btn-success btn-lg w-100 mt-4 mb-0">Log In
+                                                    </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer bg-light">
+                                        <div class="text-center text-sm text-warning">
+                                            {% if messages %}
+                                            {% for message in messages %}
+                                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                                    <div>
+                                                        <p><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&emsp13;&emsp13;<strong>{{message}}</strong></p>
+                                                    </div>
+                                                {% else %}
+                                                <div></div>
+                                                {% endif%}
+                                            {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                            
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    
+        <!--   Core JS Files   -->
+        <script src="{% static '/admin/js/core/popper.min.js' %}"></script>
+        <script src="{% static '/admin/js/core/bootstrap.min.js' %}"></script>
+        <script src="{% static '/admin/js/plugins/perfect-scrollbar.min.js' %}"></script>
+        <script src="{% static '/admin/js/plugins/smooth-scrollbar.min.js' %}"></script>
+        <script src="{% static '/admin/js/plugins/chartjs.min.js' %}"></script>
+        <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+        <script src="{% static '/admin/js/argon-dashboard.min.js?v=2.0.4' %}"></script>
+    </body>
+
+</html>
+
+  

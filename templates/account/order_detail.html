@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title  %}Order Detail{% endblock  %}
+
+{% block content %}
+
+ <!-- Breadcrumb Section Begin -->
+ <!-- Breadcrumb Begin -->
+<div class="breadcrumb-option pb-3">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="breadcrumb__links">
+                  <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                  <span>Order Detail</span>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Breadcrumb Section End -->
+
+
+
+<div class="container-fluid bg-light py-5">
+  <div class="text-center mb-2">
+    <button onclick="Convert_HTML_To_PDF();" class="btn btn-primary text-capitalize border-0">Download Invoice</button>
+  </div>
+  <div class="row justify-content-center" id="makepdf">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-center mb-4">
+                <img src="{% static '/img/logo.png' %}" alt="Invoice logo" class="img-fluid" style="max-height: 40px;">
+              </div>
+              <div class="text-center">
+                <h5 class="font-weight-bold mb-3">Invoiced To</h5>
+                <p class="mb-0">{{order.full_name}}</p>
+                <p class="mb-0">{{order.full_address}}-{{order.pincode}}</p>
+                <p class="mb-0">{{order.city}}, {{order.state}}, {{order.country}}</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex justify-content-center mb-4">
+                <div class="well">
+                  <ul class="list-unstyled mb-0">
+                    <li><strong>Order Number: </strong>#{{order.order_number}}</li>
+                    <li><strong>Transaction Id: </strong>#{{order.payment.payment_id}}</li>
+                    <li><strong>Order Date: </strong>{{order.created_at}}</li>
+                    <li><strong>Status: </strong>{{order.payment.status}}</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-center">Description</th>
+                  <th class="text-center">Qty</th>
+                  <th class="text-center">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for i in order_detail %}
+                <tr>
+                  <td class="text-center text-nowrap">{{i.product.name}}
+                    <p class="small">
+                      {% if i.variations.all %}
+                      {% for item in i.variations.all %}
+                      Size: {{item.size}}&nbsp;&nbsp;
+                      {% endfor %}
+                      {% endif %}
+                  </p>
+                  </td>
+                  <td class="text-center">{{i.quantity}}</td>
+                  <td class="text-center text-nowrap">${{i.product_price}} USD</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th colspan="2" class="text-right">Sub Total:</th>
+                  <th class="text-center text-nowrap">${{subtotal}} USD</th>
+                </tr>
+                <tr>
+                  <th colspan="2" class="text-right">Grand Total:</th>
+                  <th class="text-center text-nowrap">${{order.order_total}} USD</th>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="text-center mt-4">
+            <p class="mb-0">Thank you for shopping with us!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.jsPDF = window.jspdf.jsPDF;
+
+  // Convert HTML content to PDF
+  function Convert_HTML_To_PDF() {
+    var doc = new jsPDF();
+    
+    // Source HTMLElement or a string containing HTML.
+    var elementHTML = document.querySelector("#makepdf");
+
+    doc.html(elementHTML, {
+      callback: function(doc) {
+        // Save the PDF
+        doc.save('Invoice.pdf');
+      },
+      margin: [20, 0, 10, 10],
+      autoPaging: 'text',
+      x: 0,
+      y: 0,
+      width: 190, //target width in the PDF document
+      windowWidth: 950, //window width in CSS pixels
+    });
+  }
+</script>
+
+
+{% endblock  %}

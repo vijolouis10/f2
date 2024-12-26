@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}
+Otp Verify
+{% endblock  %}
+{% block content %}
+ <!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="breadcrumb__links">
+                  <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                  <span>Otp Verification</span>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- ============================ COMPONENT LOGIN   ================================= !-->
+<section class="section-conten padding-y">
+  
+  <!-- ============================ COMPONENT LOGIN   ================================= !-->
+  <div class="card mx-auto" style="max-width: 380px; margin-top:10px;">
+    <div class="card-body">
+    <h4 class="card-title mb-3">Otp verify</h4>
+    {% include 'includes/alert.html' %}
+    <form action="{% url 'otp' %}" method="POST">
+      {% csrf_token %}
+        <div class="form-group">
+    <input type="text" class="form-control" placeholder="Enter otp" name="otp">
+        </div> <!-- form-group// -->
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </div> <!-- form-group// -->    
+    </form>
+    </div> <!-- card-body.// -->
+  </div> <!-- card .// -->
+  </section>
+{% endblock  %}

@@ -1,0 +1,94 @@
+{% extends 'my_admin/admin_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+              <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+              <li class="breadcrumb-item text-sm text-white active" aria-current="page">Orders</li>
+            </ol>
+            <h6 class="font-weight-bolder text-white mb-0">Order Details</h6>
+          </nav>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+
+    <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card mb-4">
+              <div class="card-header pb-0">
+                <h6>Order Details</h6>
+              </div>
+              <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                  <table class="table align-items-center mb-0">
+                        <thead>
+                            <tr>   
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-4">User</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Ordered Product</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Quantity</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Address</th>
+                                <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in order_products %}
+                            <tr>
+                                <td class="ps-4 text-sm">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm font-weight-bold ">{{i.order.full_name}}</h6>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        <p class="text-sm text-dark font-weight-bold">{{i.product.name}}</p>
+                                        <div class="ps-5">
+                                            <img src="{{i.product.image.url}}" class="avatar avatar-sm" alt="user1">
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="text-sm">
+                                    <div class="d-flex flex-column justify-content-center ps-4">
+                                        <h6 class="mb-0 text-sm font-weight-bold ">{{i.quantity}}</h6>
+                                    </div>
+                                </td>
+                                <td class="text-sm">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <h6 class="mb-0 text-sm font-weight-bold ">{{i.order.full_name}},<br>
+                                            {{i.order.full_address}} - {{i.order.pincode}}<br>
+                                            {{i.order.city}} , {{i.order.state}} , {{i.order.country}}<br>
+                                            {{i.order.phone_number}}<br><br>
+                                        </h6>
+                                    </div>
+                                </td>
+                                <td class="text-sm">
+                                    <div class="d-flex flex-column justify-content-center">
+                                        {% if i.order.status == 'Delivered' %}
+                                        <h6 class="mb-0 text-sm font-weight-bold text-success">{{i.order.status}}</h6>
+                                        {% elif i.order.status == 'Cancelled'  %}
+                                        <h6 class="mb-0 text-sm font-weight-bold text-danger">{{i.order.status}}</h6>
+                                        {% else %}
+                                        <h6 class="mb-0 text-sm font-weight-bold text-primary">{{i.order.status}}</h6>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                  </table>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}

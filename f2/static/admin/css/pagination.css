@@ -1,0 +1,30 @@
+.pagination .current{
+    background-color: #5e72e4 !important;
+    color: white;
+  }
+  
+  .pagination .other{
+    color: rgb(0, 0, 0);
+  }
+  
+  .pagination .prev{
+    background-color: #5e72e4 !important;
+    color: white;
+  }
+  
+  .pagination .next{
+    background-color: #5e72e4 !important;
+    color: white;
+  }
+  
+  .pagination .prevd{
+    background-color: #5e72e421 !important;
+    color: rgba(79, 79, 79, 0.695);
+    font-weight: 400;
+  }
+  
+  .pagination .nextd{
+    background-color: #5e72e421 !important;
+    color: rgba(79, 79, 79, 0.695);
+    font-weight: 400;
+  }

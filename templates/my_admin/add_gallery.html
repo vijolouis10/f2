@@ -1,0 +1,83 @@
+{% extends 'my_admin/admin_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+                    <li class="breadcrumb-item text-sm text-white active" aria-current="page">Products</li>
+                </ol>
+                <h6 class="font-weight-bolder text-white mb-0">Add Galley</h6>
+            </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Add Product</h6>
+                    </div>
+                        <div>
+                            {% if messages %}
+                            {% for message in messages %}
+                            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                            <div class="alert alert-danger alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>{{message}}</strong>
+                            </div>
+                            {% else %}
+                            <div></div>
+                            {% endif%}
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <form action="" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <table class="table align-items-center mb-0"> 
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-4">Product
+                                        </th>
+                                        <td class="pe-4 pl-4">
+                                            <select name="product" class="form-control" required>
+                                                <option selected>Select Product</option>
+                                                {% for product in products %}
+                                                <option value="{{product.id}}">{{product.name}}</option>
+                                                {% endfor %}
+                                            </select>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-4">Product
+                                            Image</th>
+                                        <td class="pe-4 pl-4">
+                                            <input type="file" name="image" class="form-control" required>  
+        
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="px-4">
+                                            <button type="submit" class="btn btn-success">Save</button>
+                                        </th>
+                                    </tr>
+                                </table>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+{% endblock content %}        

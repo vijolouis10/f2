@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Order Tracking{% endblock title %}
+
+{% block content %}
+ <!-- Breadcrumb Begin -->
+ <div class="breadcrumb-option pb-3">
+  <div class="container">
+      <div class="row">
+          <div class="col-lg-12">
+              <div class="breadcrumb__links">
+                  <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                  <span>Order Tracking</span>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Breadcrumb Section End -->
+
+<!-- ========================= SECTION CONTENT ========================= -->
+<section class="section-conten padding-y bg">
+
+    <div class="container">
+        <div class="row">
+        
+        <main class="col-md-12">
+            <article class="card">
+            <header class="card-header">
+                <strong class="d-inline-block mr-3">Track your order :</strong>
+            </header>
+
+            <style>
+                @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');.card{position: relative;display: -webkit-box;display: -ms-flexbox;display: flex;-webkit-box-orient: vertical;-webkit-box-direction: normal;-ms-flex-direction: column;flex-direction: column;min-width: 0;word-wrap: break-word;background-color: #fff;background-clip: border-box;border: 1px solid rgba(0, 0, 0, 0.1);border-radius: 0.10rem}.card-header:first-child{border-radius: calc(0.37rem - 1px) calc(0.37rem - 1px) 0 0}.card-header{padding: 0.75rem 1.25rem;margin-bottom: 0;background-color: #fff;border-bottom: 1px solid rgba(0, 0, 0, 0.1)}.track{position: relative;background-color: #ddd;height: 7px;display: -webkit-box;display: -ms-flexbox;display: flex;margin-bottom: 60px;margin-top: 50px}.track .step{-webkit-box-flex: 1;-ms-flex-positive: 1;flex-grow: 1;width: 25%;margin-top: -18px;text-align: center;position: relative}.track .step.active:before{background: #FF5722}.track .step::before{height: 7px;position: absolute;content: "";width: 100%;left: 0;top: 18px}.track .step.active .icon{background: #ee5435;color: #fff}.track .icon{display: inline-block;width: 40px;height: 40px;line-height: 40px;position: relative;border-radius: 100%;background: #ddd}.track .step.active .text{font-weight: 400;color: #000}.track .text{display: block;margin-top: 7px}.itemside{position: relative;display: -webkit-box;display: -ms-flexbox;display: flex;width: 100%}.itemside .aside{position: relative;-ms-flex-negative: 0;flex-shrink: 0}.img-sm{width: 80px;height: 80px;padding: 7px}.itemside .info{padding-left: 15px;padding-right: 7px}.itemside .title{display: block;margin-bottom: 5px;color: #212529}p{margin-top: 0;margin-bottom: 1rem}.btn-warning{color: #ffffff;background-color: #ee5435;border-color: #ee5435;border-radius: 1px}.btn-warning:hover{color: #ffffff;background-color: #ff2b00;border-color: #ff2b00;border-radius: 1px}
+            </style>
+            
+            <div class="card-body">
+                <h6>Order ID: <strong class="text-primary">{{order_tracking.order_number}}</strong></h6>
+                <article class="card">
+                {% if order_tracking.cancelled != 'Cancelled' %}
+                </article>
+                <div class="track"> 
+                  {% if order_tracking.status == "Processing" %}
+                  <div class="step active"> <span class="icon"> <i class="fa fa-spinner"></i></i> </span> <span class="text">Order Processing{{order_tracking.updated_at}}</span></div>
+                    <div class="step"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text"> Order Accepted</span> </div>
+                    <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Out For Delivery</span> </div>
+                    <div class="step"> <span class="icon"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> </span> <span class="text">Delivered</span> </div>
+                  {% elif order_tracking.status == "Accepted" %}
+                  <div class="step active"> <span class="icon"> <i class="fa fa-spinner"></i></i> </span> <span class="text">Order Processing</span> </div>
+                    <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text"> Order Accepted<br>{{order_tracking.updated_at}}</span> </div>
+                    <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Out For Delivery</span> </div>
+                    <div class="step"> <span class="icon"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> </span> <span class="text">Delivered</span> </div>
+                    {% elif order_tracking.status == "Out For Delivery" %}
+                  <div class="step active"> <span class="icon"> <i class="fa fa-spinner"></i></i> </span> <span class="text">Order Processing</span> </div>
+                    <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text"> Order Accepted</span> </div>
+                    <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Out For Delivery<br>{{order_tracking.updated_at}}</span> </div>
+                    <div class="step"> <span class="icon"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> </span> <span class="text">Delivered</span> </div>
+                    {% elif order_tracking.status == "Delivered" %}
+                    <div class="step active"> <span class="icon"> <i class="fa fa-spinner"></i></i> </span> <span class="text">Order Processing</span> </div>
+                      <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text"> Order Accepted</span> </div>
+                      <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Out For Delivery</span> </div>
+                      <div class="step active"> <span class="icon"> <i class="fa fa-shopping-bag" aria-hidden="true"></i> </span> <span class="text">Delivered<br>{{order_tracking.updated_at}}</span> </div>
+                    {% endif %}
+                </div>
+                {% elif order_tracking.cancelled == 'Cancelled' %}
+                <div class="card-body row">
+                    <div class="col"> <strong>Cancelled:</strong> <br> {{order_tracking.c_date}} </p></div>
+                </div>
+            </article>
+            <div class="mt-4 mb-4"> 
+                <h4 class="text-danger text-center">Order Cancelled</h4>
+            </div>
+                {% endif %}
+                <hr>
+                <a href="{% url 'my_orders' %}" class="btn btn-warning" data-abc="true"> <i class="fa fa-chevron-left"></i> Back to orders</a>
+            </div>
+        
+            </div> <!-- table-responsive .end// -->
+            </article> <!-- order-group.// --> 
+        </main>
+    </div> <!-- row.// -->
+    </div>
+    
+    
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+    
+    
+
+
+{% endblock content %}

@@ -1,0 +1,143 @@
+{% extends 'my_admin/admin_base.html' %}
+
+{% block content %}
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+              <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+              <li class="breadcrumb-item text-sm text-white active" aria-current="page">Users</li>
+            </ol>
+            <h6 class="font-weight-bolder text-white mb-0">Users</h6>
+          </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card mb-4">
+              <div class="card-header pb-0">
+                <h6>User Management</h6>
+              </div>
+              <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                  <table class="table align-items-center mb-0 table-hover">
+                    <thead>
+                      <tr>   
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-4">SI.No</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Profile</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">First Name</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Last Name</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Username</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2">Email</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2">Phone</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        {% if user.is_superadmin %}
+                        {% else %}
+                        <tr>
+                            <td>
+                                <h6 class="ps-4 mb-0 text-sm font-weight-bold "> {{ forloop.counter0 }} </h6>
+                            </td>
+                            <td>
+                                <div>
+                                    <img src="{{user.userprofile.profile_pic.url}}" class="avatar avatar-sm me-3" alt="user1">
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.first_name|capfirst}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.last_name|capfirst}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.username}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.email}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{user.phone_number}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                {% if user.is_active %}
+                            <a href="{% url 'block_user' user.id %}" class="text-success px-2" onclick="blockUser('{{ user.id }}')"><i class="fas fa-unlock"></i></a>
+                                {% else %}
+                            <a href="{% url 'block_user' user.id %}" class="text-danger px-2" onclick="unblockUser('{{ user.id }}')"><i class="fas fa-user-lock"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+   
+  
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function blockUser(userId) {
+        const message = "Once blocked, the user will not be able to access their account!";
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: message,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+    
+        })
+        .then((willBlock) => {
+            if (willBlock) {
+            window.location.href = "http://127.0.0.1:8000/my_admin/block_user/"+userId;
+            } else {
+            swal("The user has not been blocked.");
+            }
+        });
+        }
+    </script>  
+    <script>
+        function unblockUser(userId) {
+        const message = "Once unblocked, the user will be able to access their account!";
+        event.preventDefault();
+        swal({
+            title: "Are you sure?",
+            text: message,
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+
+        })
+        .then((willUnblock) => {
+            if (willUnblock) {
+                window.location.href = "http://127.0.0.1:8000/my_admin/block_user/"+userId;
+            } else {
+            swal("The user has not been unblocked.");
+            }
+        });
+        }
+    </script>
+  
+{% endblock content %}

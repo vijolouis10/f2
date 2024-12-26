@@ -1,0 +1,276 @@
+{% extends 'my_admin/admin_base.html' %}
+
+{% block content %}
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+              <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+              <li class="breadcrumb-item text-sm text-white active" aria-current="page">Dashboard</li>
+            </ol>
+            <h6 class="font-weight-bolder text-white mb-0">Dashboard</h6>
+          </nav>
+        </div>
+      </nav>
+      <!-- End Navbar -->
+      <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-uppercase font-weight-bold">Paypal</p>
+                      <h5 class="font-weight-bolder">
+                        $ {{paypal_total|floatformat:2}}
+                      </h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-primary shadow-primary text-center rounded-circle">
+                      <i class="fa fa-paypal text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+            <div class="card">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-uppercase font-weight-bold">Total Earnings</p>
+                      <h5 class="font-weight-bolder">
+                        $ {{total_earning|floatformat:2}}
+                      </h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end"> 
+                    <div class="icon icon-shape bg-gradient-success shadow-success text-center rounded-circle">
+                      <i class="fas fa-dollar-sign text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-3 col-sm-6">
+            <div class="card">
+              <div class="card-body p-3">
+                <div class="row">
+                  <div class="col-8">
+                    <div class="numbers">
+                      <p class="text-sm mb-0 text-uppercase font-weight-bold">Sales</p>
+                      <h5 class="font-weight-bolder">
+                        {{sales}}
+                      </h5>
+                    </div>
+                  </div>
+                  <div class="col-4 text-end">
+                    <div class="icon icon-shape bg-gradient-warning shadow-warning text-center rounded-circle">
+                      <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card mb-4">
+              <div class="card-header pb-0">
+                <div class="row">
+                  <div class="col-6">
+                    <h6>Orders Overview</h6>
+                    <div class="card-body px-0 pt-0 pb-2">
+                      <canvas id="orderChart" width="800" height="450"></canvas>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <h6>Revenue Overview</h6>
+                    <div class="card-body px-0 pt-0 pb-2">
+                      <canvas id="revenueChart" width="800" height="450"></canvas>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <div class="card mb-4">
+              <div class="card-header pb-0">
+                <h6>Recent Sales</h6>
+              </div>
+              <div class="card-body px-0 pt-0 pb-2">
+                <div class="table-responsive p-0">
+                  <table class="table align-items-center mb-0 table-hover">
+                    <thead>
+                      <tr>   
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-4">Date</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Order ID</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Customer</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Order Total</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Payment Mode</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2">Status</th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2"></th>
+                        <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>
+                                <h6 class="ps-4 mb-0 text-sm font-weight-bold "> {{ order.created_at }} </h6>
+                            </td>
+                            <td class="text-sm">
+                            <div class="d-flex flex-column justify-content-center">
+                                <a href="{% url 'view_order' order.id %}" class="text-danger px-2" ><h6 class="mb-0 text-sm font-weight-bold ">{{order.order_number}}</h6></a> 
+                            </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{order.first_name|capfirst}} {{order.last_name|capfirst}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">$ {{order.order_total}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm font-weight-bold ">{{order.payment.payment_method}}</h6>
+                                </div>
+                            </td>
+                            <td class="text-sm">
+                                <div class="d-flex flex-column justify-content-center">
+                                    {% if order.status == 'Delivered' %}
+                                    <h6 class="mb-0 text-sm font-weight-bold text-success">{{order.status}}</h6>
+                                    {% elif order.status == 'Cancelled'  %}
+                                    <h6 class="mb-0 text-sm font-weight-bold text-danger">{{order.status}}</h6>
+                                    {% else %}
+                                    <h6 class="mb-0 text-sm font-weight-bold text-primary">{{order.status}}</h6>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            {% if order.status == 'Delivered' or order.status == 'Cancelled' %}
+                            {% else %}
+                                <form action="{% url 'order_status' order.id %}" method="post">
+                                    {% csrf_token %}
+                                    <td>
+                                        <select name="status" class="form">
+                                            {% if order.status == 'Processing' %}
+                                                <option selected>Processing</option>
+                                            {% else %}
+                                                <option>Processing</option>
+                                            {% endif %}
+                                            {% if order.status == 'Accepted' %}
+                                                <option selected>Accepted</option>
+                                            {% else %}
+                                                <option>Accepted</option>
+                                            {% endif %}
+                                            {% if order.status == 'Out For Delivery' %}
+                                                <option selected>Out For Delivery</option>
+                                            {% else %}
+                                                <option>Out For Delivery</option>
+                                            {% endif %}
+                                            {% if order.status == 'Delivered' %}
+                                                <option selected>Delivered</option>
+                                            {% else %}
+                                                <option>Delivered</option>
+                                            {% endif %}
+                                            {% if order.status == 'Cancelled' %}
+                                                <option selected>Cancelled</option>   
+                                            {% else %}
+                                            <option>Cancelled</option>   
+                                            {% endif %}
+                                        </select>
+                                    </td>
+                                    <td class="text-sm">
+                                        <button type="submit" class="btn btn-success">Change</button>
+                                    </td>
+                                </form>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </nav>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+    <script>
+        const chart1 = document.getElementById('orderChart').getContext('2d');
+        const orderChart = new Chart(chart1, {
+            type: 'bar',
+            data: {
+              labels : ['Processing','Accepted','Out For Delivery','Delivered','Cancelled'],
+                datasets: [{
+                  label: "Sales",
+                  data : ['{{processing}}','{{accepted}}','{{out_delivery}}','{{delivered}}','{{cancelled}}'],
+                  backgroundColor: [
+                      '#e9724d',
+                      '#d6d727',
+                      '#92cad1',
+                      '#79ccb3',
+                      '#868686',
+                  ],
+                  borderColor: [
+                      '#e9724d',
+                      '#d6d727',
+                      '#92cad1',
+                      '#79ccb3',
+                      '#868686',
+                  ],
+                  borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        const chart2 = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(chart2, {
+            type: 'bar',
+            data: {
+            labels : ['Paypal',],
+                datasets: [{
+                label: "Revenue",
+                data : ['{{paypal_total}}'],
+                backgroundColor: [
+                    '#e60049', 
+                ],
+                borderColor: [
+                    '#e60049', 
+                ],
+                borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+{% endblock content %}

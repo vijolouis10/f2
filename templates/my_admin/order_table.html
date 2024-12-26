@@ -1,0 +1,164 @@
+{% extends 'my_admin/admin_base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<link href="{% static '/admin/css/pagination.css' %}" rel="stylesheet" />
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl " id="navbarBlur" data-scroll="false">
+        <div class="container-fluid py-1 px-3">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+              <li class="breadcrumb-item text-sm"><a class="opacity-5 text-white" href="javascript:;">Pages</a></li>
+              <li class="breadcrumb-item text-sm text-white active" aria-current="page">Orders</li>
+            </ol>
+            <h6 class="font-weight-bolder text-white mb-0">Orders</h6>
+          </nav>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+
+    <div class="container-fluid py-4">
+        <div class="row">
+          <div class="col-12">
+                <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Order Management</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0 table-hover">
+                            <thead>
+                                <tr>   
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-4">Order ID</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">User</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Order Total</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Payment Mode</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder  ps-2">Date </th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2">status</th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2"></th>
+                                    <th class="text-uppercase text-secondary text-xs font-weight-bolder ps-2"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <a href="{% url 'view_order' order.id %}" class="text-danger px-2" ><h6 class="mb-0 text-sm font-weight-bold ">{{order.order_number}}</h6></a> 
+                                        </div>
+                                    </td>
+                                    <td class="text-sm">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm font-weight-bold ">{{order.first_name|capfirst}}</h6>
+                                        </div>
+                                    </td>
+                                    <td class="text-sm">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm font-weight-bold ">{{order.order_total}}</h6>
+                                        </div>
+                                    </td>
+                                    <td class="text-sm">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm font-weight-bold ">{{order.payment.payment_method}}</h6>
+                                        </div>
+                                    </td>
+                                    <td class="text-sm">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            <h6 class="mb-0 text-sm font-weight-bold ">{{order.created_at}}</h6>
+                                        </div>
+                                    </td>
+                                    <td class="text-sm">
+                                        <div class="d-flex flex-column justify-content-center">
+                                            {% if order.status == 'Delivered' %}
+                                            <h6 class="mb-0 text-sm font-weight-bold text-success">{{order.status}}</h6>
+                                            {% elif order.status == 'Cancelled'  %}
+                                            <h6 class="mb-0 text-sm font-weight-bold text-danger">{{order.status}}</h6>
+                                            {% else %}
+                                            <h6 class="mb-0 text-sm font-weight-bold text-primary">{{order.status}}</h6>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                    {% if order.status == 'Delivered' or order.status == 'Cancelled' %}
+                                    {% else %}
+                                    <form action="{% url 'order_status' order.id %}" method="post">
+                                        {% csrf_token %}
+                                        <td>
+                                            <select name="status" class="form">
+                                                {% if order.status == 'Processing' %}
+                                                <option selected>Processing</option>
+                                                {% else %}
+                                                <option>Processing</option>
+                                                {% endif %}
+                                                {% if order.status == 'Accepted' %}
+                                                <option selected>Accepted</option>
+                                                {% else %}
+                                                <option>Accepted</option>
+                                                {% endif %}
+                                                {% if order.status == 'Out For Delivery' %}
+                                                <option selected>Out For Delivery</option>
+                                                {% else %}
+                                                <option>Out For Delivery</option>
+                                                {% endif %}
+                                                {% if order.status == 'Delivered' %}
+                                                <option selected>Delivered</option>
+                                                {% else %}
+                                                <option>Delivered</option>
+                                                {% endif %}
+                                                {% if order.status == 'Cancelled' %}
+                                                <option selected>Cancelled</option>   
+                                                {% else %}
+                                                <option>Cancelled</option>   
+                                                {% endif %}
+                                            </select>
+                                        </td>
+                                        <td class="text-sm">
+                                            <button type="submit" class="btn btn-success">Change</button>
+                                        </td>
+                                    </form>
+                                    {% endif %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+          </div>
+    </div>
+
+    <nav class="mt-3" aria-label="Page navigation sample">
+        {% if orders.has_other_pages%}
+        <ul class="pagination list-inline d-flex justify-content-center">
+                {%if orders.has_previous %} {# whether the previous page exists #}
+                    <li class="page-item"><a class="page-link prev" href="?page={{orders.previous_page_number}}"><i class="fas fa-backward"></i></a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link prevd" href="#"><i class="fas fa-backward"></i></a></li>
+                {% endif %}
+    
+                {% for i in orders.paginator.page_range %}
+                    {% if orders.number == i %}
+                <li class="page-item"><a class="page-link current" href="#">{{i}}</a></li>
+                    {% else %}
+                <li class="page-item"><a class="page-link other" href="?page={{i}}">{{i}}</a></li>
+                    {% endif %}
+                {% endfor %}
+    
+                {%if orders.has_next %} {# whether the next page exists #}
+                    <li class="page-item"><a class="page-link next" href="?page={{orders.next_page_number}}"><i class="fas fa-forward"></i></a></li>
+                {% else %}
+                    <li class="page-item disabled"><a class="page-link nextd" href="#"><i class="fas fa-forward"></i></a></li>
+                {% endif %}
+        </ul>
+        {% else %}
+        <div></div>
+        {% endif %}
+    </nav>
+   
+  
+
+
+{% endblock content %}

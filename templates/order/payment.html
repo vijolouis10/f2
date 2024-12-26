@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Payment{% endblock title %}
+{% block content %}
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="{% url 'home' %}"><i class="fa fa-home"></i> Home</a>
+                        <span>Payment</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Shopping Cart Section Begin -->
+
+    <section class="shopping-cart spad">
+        <div class="container">
+            <h4 class="text-center mb-2">Review Your Order and Make Payment</h4>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="shopping__cart__table">
+                        <div class="card">
+                        <h5 class="card-header">Billing Address</h5>
+                        <div class="card-body">
+                            <p class="card-text mb-0">{{order.full_name}}</p>
+                            <p class="card-text mb-0">{{order.full_address}}-{{order.pincode}}</p>
+                            <p class="card-text mb-0">{{order.city}}, {{order.state}}, {{order.country}}</p>
+                            <p class="card-text mb-0">{{order.email}}</p>
+                            <p class="card-text mb-0">{{order.phone_number}}</p>
+                            {% if order.order_note %}
+                            <b>Order Note: </b>{{order.order_note}}
+                            {% endif %}
+                        </div>
+                        </div>
+                        <div class="card">
+                        <h5 class="card-header">Payment Method</h5>
+                        <div class="card-body">
+                            <p class="card-text">PayPal</p>
+                        </div>
+                        </div>
+                        <div class="card">
+                        <h5 class="card-header">Review Products</h5>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th class="col">Product</th>
+                                    <th class="col">Quantity</th>
+                                    <th class="col">Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for cart_item in cart_items %}
+                                <tr>
+                                    <td class="product__cart__item">
+                                    <div class="product__cart__item__text">
+                                        <h6 class="mb-0 text-nowrap">{{cart_item.product.name}}</h6>
+                                        <p class="small">
+                                        {% if cart_item.variations.all %}
+                                        {% for i in cart_item.variations.all %}
+                                        Size: {{i.size}}&nbsp;&nbsp;
+                                        {% endfor %}
+                                        {% endif %}
+                                        </p>
+                                    </div>
+                                    </td>
+                                    <td class="text-center text-nowrap">$ {{cart_item.product.selling_price}}.0 X {{cart_item.quantity}}</td>
+                                    <td class="text-nowrap">$ {{cart_item.sub_total}}.0</td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            </div>
+                            
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="cart__total__procced">
+                    <h6>Billing total</h6>
+                    <hr>
+                    <ul>
+                        <li>Subtotal <span>$ {{total}}.0</span></li>
+                        <li>Discount <span>$ {{discount}}.0</span></li>
+                        <li>Total <span>$ {{grand_total}}.0</span></li>
+                    </ul>
+                    <div id="paypal-button-container" class="mt-2"></div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shopping Cart Section End -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AcojFNITDt1l42l_HudK5_JFrWd-VXl3mDQppG47NkkHPVUExUbHWpNMrFsx_8SIXfyOxzfUO9XE3GPo&currency=USD"></script>
+
+    <script>
+        function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+        }
+
+        var amount = "{{grand_total}}";
+        var url = "{% url 'payments' %}";
+        var csrftoken = getCookie('csrftoken');
+        var orderID = "{{order.order_number}}";
+        var payment_method = "PayPal";
+        var redirect_url = "{% url 'order_complete' %}";
+
+        paypal.Buttons({
+        style: {
+            color: 'blue',
+            shape: 'rect',
+            label: 'pay',
+            height: 40,
+        },
+            
+        // Sets up the transaction when a payment button is clicked
+        createOrder: function(data, actions) {
+            return actions.order.create({
+            purchase_units: [{
+                amount: {
+                value: amount,
+                }
+            }]
+            });
+        },
+        // Finalize the transaction after payer approval
+        onApprove: function(data, actions) {
+            return actions.order.capture().then(function(details) {
+            // Show success message to buyer
+            console.log(details)
+            sendData();
+            function sendData() {
+                fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json",
+                    "X-CSRFToken": csrftoken,
+                },
+                body: JSON.stringify({
+                    orderID: orderID,
+                    transID: details.id,
+                    payment_method: payment_method,
+                    status: details.status,
+                }),
+                })
+                .then((response) => response.json())
+                .then((data) => {
+                window.location.href = redirect_url + '?order_number='+data.order_number+'&payment_id='+data.transID;
+                });          
+            }
+            });
+        }
+        }).render('#paypal-button-container');
+    </script>
+
+{% endblock content %}
